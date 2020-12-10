@@ -6,7 +6,7 @@ const Add: React.FC = () => {
 
     const [username, setUsername] = useState<string>('');
     const [content, setContent] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+    const [password, setPassword] = useState<string>(''); //not sure about setting password to state but I'm gunna do it
     const history = useHistory();
 
     const handlePost = async() => {
