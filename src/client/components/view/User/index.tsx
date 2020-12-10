@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+// react-html-parse needed because my return wasn't parsing the html 
 import ReactHtmlParser from 'react-html-parser'; 
 import * as Mentions from '../../parseMentions';
 
@@ -9,7 +10,7 @@ interface IUseParams {
     name: string
 }
 
-export interface IChirps { // tried to import from ../Chirps but it didn't like that
+export interface IChirps { // tried to just import this from ../Chirps, but it didn't like that. or I did it wrong idk
     chirpid: string,
     username: string,
     content: string;
@@ -21,10 +22,14 @@ const User: React.FC = () => {
     const [ chirps, setChirps ] = useState<IChirps[]>([]); 
 
     const getChirps = async() => {
-        // an error is gunna pop if the user doesn't exist. I tried to mitigate but i just can't anymore.
-        let r = await fetch('/chirps/user/' + name);
-        let data = await r.json();
-        setChirps(data);
+        // an error is gunna pop if the user doesn't exist. I tried to mitigate this but i just can't anymore.
+        try {
+            let r = await fetch('/chirps/user/' + name);
+            let data = await r.json();
+            setChirps(data);
+        } catch(e) {
+            console.error(e);
+        }
     }
 
     useEffect(() => { getChirps(); }, []);

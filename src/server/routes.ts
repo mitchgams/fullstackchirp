@@ -12,6 +12,11 @@ router.get('/chirps/:id?', async(req, res) => {
     }
 });
 
+router.get('/mentions/:name?', async(req, res) => {
+    const name = req.params.name;
+    res.json(await db.Chirps.ps(name));
+})
+
 router.get('/users/:name?', async(req, res) => {
     const name = req.params.name;
     if(name) {

@@ -12,15 +12,19 @@ const Edit: React.FC = () => {
     const { id } = useParams<IUseParams>();
     const [password, setPassword] = useState<string>('')
     const [username, setUser] = useState<string>('');
-    const [content, setText] = useState<string>('');
+    const [content, setContent] = useState<string>('');
     const history = useHistory();
 
     useEffect(() => {
         (async() => {
-            let r = await fetch(`/chirps/${id}`);
-            let data = await r.json();
-            setUser(data[0].username);
-            setText(data[0].content);
+            try {
+                let r = await fetch(`/chirps/${id}`);
+                let data = await r.json();
+                setUser(data[0].username);
+                setContent(data[0].content);
+            } catch(e) {
+                console.error(e);
+            }
         })();
     }, []);
 
@@ -79,7 +83,7 @@ const Edit: React.FC = () => {
                                 <span className="input-group-text">Content: </span>
                             </div>
                             <textarea className="form-control" aria-label="With textarea" value={content}
-                            onChange={(event) => { setText(event.target.value); }}
+                            onChange={(event) => { setContent(event.target.value); }}
                             />
                         </div>
                     </div>

@@ -17,13 +17,17 @@ const Chirps: React.FC<ChirpsProps> = props => {
 
     const [chirps, setChirps] = useState<IChirps[]>([]);
 
-    const getChirps = async() => {
-        let r = await fetch('/chirps/');
-        let data = await r.json();
-        setChirps(data);
-    }
-    
-    useEffect(() => { getChirps(); }, []);
+    useEffect(() => {
+        (async() => {
+            try {
+                let r = await fetch('/chirps/');
+                let data = await r.json();
+                setChirps(data);
+            } catch (e) {
+                console.error(e);
+            }
+        })();
+     }, []);
 
     return (
         <>

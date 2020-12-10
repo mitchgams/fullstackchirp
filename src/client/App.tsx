@@ -5,6 +5,7 @@ import Header from './components/Header';
 import Edit from './components/view/Edit/';
 import Add from  './components/view/Add';
 import User from './components/view/User';
+import Mentioned from './components/view/Mentioned';
 
 const App: React.FC<IAppProps> = props => {
 
@@ -16,6 +17,7 @@ const App: React.FC<IAppProps> = props => {
 					<Route exact path="/:id/admin"><Edit /></Route>
 					<Route exact path="/chirp/add"><Add /></Route>
 					<Route exact path="/user/:name"><User /></Route>
+					<Route exact path="/mentioned/:name"><Mentioned /></Route>
 					<Route path="/"><Home /></Route>
 				</Switch>
 			</main>
