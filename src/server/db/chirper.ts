@@ -1,5 +1,9 @@
 import { Query } from './index';
 
+/**************
+ * this file gives me a headache
+ */
+
 const allChirps = async() => Query('SELECT c.id as chirpid, c.userid as userid, c.content as content, u.name as username, u.email as email From chirps c JOIN users u on c.userid = u.id ORDER BY c._created DESC LIMIT 25');
 
 const chirpOfId = async(id: number) => Query('SELECT c.id as chirpid, c.userid as userid, c.content as content, u.name as username FROM chirps c JOIN users u on c.userid = u.id WHERE c.id = ?', [id]);

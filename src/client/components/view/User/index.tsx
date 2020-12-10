@@ -9,8 +9,7 @@ interface IUseParams {
     name: string
 }
 
-export interface IChirps {
-    nextid: number,
+export interface IChirps { // tried to import from ../Chirps but it didn't like that
     chirpid: string,
     username: string,
     content: string;
@@ -23,10 +22,9 @@ const User: React.FC = () => {
 
     const getChirps = async() => {
         // an error is gunna pop if the user doesn't exist. I tried to mitigate but i just can't anymore.
-            let r = await fetch('/chirps/user/' + name);
-            let data = await r.json();
-            console.log(data);
-            setChirps(data);
+        let r = await fetch('/chirps/user/' + name);
+        let data = await r.json();
+        setChirps(data);
     }
 
     useEffect(() => { getChirps(); }, []);

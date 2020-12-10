@@ -28,9 +28,7 @@ const Edit: React.FC = () => {
         const request = await fetch(`/chirps/delete/${id}`, {
             method: 'DELETE',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                password: password
-            })
+            body: JSON.stringify({password: password})
         })
         if(request.status === 401) { // wrong password
             alert('The password you have entered is incorrect');
@@ -43,9 +41,7 @@ const Edit: React.FC = () => {
         try {
             const request = await fetch(`/chirps/edit/${id}`, {
                 method: 'PUT',
-                headers: {
-                'Content-Type': 'application/json'
-                },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({chirpid: id, username: username, password: password, content: content})
             });
             if(request.status === 401) { // wrong password

@@ -25,7 +25,18 @@ router.get('/chirps/user/:name?', async(req, res) => {
     const name = req.params.name;
     const request = await db.Chirps.getChirpsFromName(name);
     res.json(request);
-})
+});
+
+
+/**************************
+ * Ok so I'm not super happy with the way I handled
+ * incorrect pass/user. I hope you can kinda see where my head was at.
+ * Right now if a password or username is invalid chirps.ts returns 401,
+ * below if request isInteger it throws 401. which will obv be caught. 
+ * My worry is I'm sendStatus(e), so if a different error is thrown it might crash the server.
+ * well idk, everytime I get a major error in the server it keeps working, but still.
+ * I'm sure there's a better way, but it felt right in the moment. thanks for reading.
+ */
 
 router.delete('/chirps/delete/:id?', async(req, res) => {
     let id = req.params.id;
@@ -47,7 +58,7 @@ router.put('/chirps/edit/:id?', async(req, res) => {
         res.sendStatus(200);
     } catch(e) {
         console.error(e);
-        res.sendStatus(e); //this works, but if a different error gets thrown somehow then this will crash my code... 
+        res.sendStatus(e); //this works, but if a different error gets thrown somehow then this will crash my code. 
     }
 });
 

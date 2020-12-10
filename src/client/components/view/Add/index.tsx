@@ -20,9 +20,7 @@ const Add: React.FC = () => {
         } else {
             const request = await fetch(`/chirps/post/`, {
                 method: 'POST',
-                headers: {
-                'Content-Type': 'application/json'
-                },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({name: username, password: password, content: content})
             });
             if(request.status === 401) {
