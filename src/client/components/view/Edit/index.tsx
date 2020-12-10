@@ -44,7 +44,7 @@ const Edit: React.FC = () => {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({chirpid: id, username: username, password: password, content: content})
             });
-            if(request.status === 401) { // wrong password
+            if(request.status === 401) { // wrong password. is this even remotely the right approach? felt right in the moment
                 alert('The password you have entered is incorrect');
             } else { // success go back
                 history.goBack();
