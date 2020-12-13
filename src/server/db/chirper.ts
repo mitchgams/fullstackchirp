@@ -88,6 +88,7 @@ const getChirpsFromName = async(name: string) => {
     const userId = await getUserIdFromName(name);
     if(userId === 0) {
         console.error(`user: ${name} does not exist`);
+        return [];
     } else {
         return Query('SELECT c.id as chirpid, c.userid as userid, c.content as content, u.name as username, u.email as email From chirps c JOIN users u on c.userid = u.id WHERE c.userid = ? ORDER BY c._created DESC LIMIT 25', [userId]);
     }

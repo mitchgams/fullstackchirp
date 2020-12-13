@@ -4,11 +4,10 @@ import { useState, useEffect } from 'react';
 
 interface IUseParams {
     id: string;
-} 
-
-
+}
 
 const Edit: React.FC = () => {
+
     const { id } = useParams<IUseParams>();
     const [password, setPassword] = useState<string>('')
     const [username, setUser] = useState<string>('');
@@ -29,16 +28,20 @@ const Edit: React.FC = () => {
     }, []);
 
     const handleDelete = async() => {
-        const request = await fetch(`/chirps/delete/${id}`, {
-            method: 'DELETE',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({password: password})
-        })
-        if(request.status === 401) { // wrong password
-            alert('The password you have entered is incorrect');
-        } else { // success go back
-            setPassword('');
-            history.goBack();
+        try {
+            const request = await fetch(`/chirps/delete/${id}`, {
+                method: 'DELETE',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({password: password})
+            })
+            if(request.status === 401) { // wrong password
+                alert('The password you have entered is incorrect');
+            } else { // success go back
+                setPassword('');
+                history.goBack();
+            }
+        } catch(e) {
+            console.error(e);
         }
     }
 
@@ -49,7 +52,7 @@ const Edit: React.FC = () => {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({chirpid: id, username: username, password: password, content: content})
             });
-            if(request.status === 401) { // wrong password. is this even remotely the right approach? felt right in the moment
+            if(request.status === 401) {
                 alert('The password you have entered is incorrect');
             } else { // success go back
                 setPassword('');
@@ -69,7 +72,6 @@ const Edit: React.FC = () => {
                                 <span className="input-group-text" id="">Username: </span>
                             </div>
                             <input type="text" className="form-control" value={username} 
-                            onChange={(event) => { setUser(event.target.value) }}
                             readOnly/>
                         </div>
                         <div className="input-group mt-3">

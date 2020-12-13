@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import ReactHtmlParser from 'react-html-parser'; 
+import ReactHtmlParser from 'react-html-parser'; // React was showing raw html, found this solution
 import { useState, useEffect } from 'react';
 import * as Mentions from '../../parseMentions';
 
@@ -11,9 +11,7 @@ export interface IChirps {
     content: string;
 }
 
-interface ChirpsProps {} 
-
-const Chirps: React.FC<ChirpsProps> = props => {
+const Chirps: React.FC = () => {
 
     const [chirps, setChirps] = useState<IChirps[]>([]);
 

@@ -53,7 +53,7 @@ router.delete('/chirps/delete/:id?', async(req, res) => {
         // this seems a bit sloppy but it works
         if(e === 401) {
             res.sendStatus(e); 
-            console.error(`invalid username or password: status ${e}`);
+            console.error(`invalid username or password: status ${e}, chirper.ts router.delete`);
         } else {
             res.sendStatus(500);
         }
@@ -70,7 +70,7 @@ router.put('/chirps/edit/:id?', async(req, res) => {
         // this seems a bit sloppy but it works
         if(e === 401) {
             res.sendStatus(e); 
-            console.error(`invalid username or password: status ${e}`);
+            console.error(`invalid username or password: status ${e}, chirper.ts router.put`);
         } else {
             res.sendStatus(500);
         } 
@@ -87,7 +87,7 @@ router.post('/chirps/post/', async(req, res) => {
         // this seems a bit sloppy but it works
         if(e === 401) {
             res.sendStatus(e); 
-            console.error(`invalid username or password: status ${e}`);
+            console.error(`invalid username or password: status ${e}, chirper.ts router.post`);
         } else {
             res.sendStatus(500);
         }
