@@ -20,7 +20,9 @@ router.get('/mentions/:name?', async(req, res) => {
 router.get('/users/:name?', async(req, res) => {
     const name = req.params.name;
     if(name) {
-        res.json(await db.Chirps.getUserIdFromName(name));
+        const id = await db.Chirps.getUserIdFromName(name);
+        console.log(`Fetched userid: ${id} from name: ${name} [/users/${name}]`);
+        res.json(id);
     } else {
         res.json(await db.Chirps.getUsers());
     }
