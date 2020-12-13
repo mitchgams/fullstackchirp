@@ -19,6 +19,6 @@ begin
     from mentions m
     join chirps c on m.chirpid = c.id
     join users u on c.userid = u.id
-    where m.userid = uid;
+    where m.userid = uid ORDER by c._created DESC;
     end //
     delimiter ;

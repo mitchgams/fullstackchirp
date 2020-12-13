@@ -4,10 +4,9 @@ import { Query } from './index';
  * this file gives me a headache
  */
 
-const ps = async(name: string) => {
+const mentionsOfUser = async(name: string) => {
     const userid = await getUserIdFromName(name);
     const chirps = await Query('call spUserMentions(?)', [userid]);
-    chirps.pop();
     return chirps[0];
 }
 
@@ -41,7 +40,9 @@ const updateChirp = async(id: number, content: string, name: string, password: s
     if(checkUser[0].password !== password) {
         return 401;
     } else {
-        return Query('UPDATE chirps SET content = ? WHERE id = ?', [content, id]);
+        const request = await Query('UPDATE chirps SET content = ? WHERE id = ?', [content, id]);
+        let mention = await addMention(content, name);
+        return request;
     }
 }
 
@@ -52,6 +53,22 @@ const getUserIdFromName = async(name: string) => {
     } else return request[0].id;
 }
 
+const addMention = async(content: string, name: string) => {
+    const words = content.split(' ');
+    for(let word of words) {
+        if(word.startsWith('@')) {
+            const chars = word.split('');
+            chars.shift();
+            let userId = await getUserIdFromName(chars.join(''));
+            if(userId !== 0) { //user exists
+                console.log(`Username ${chars.join('')} found, adding mention: chirper.ts [addMention()].`);
+                let max = await Query('SELECT MAX(id) as id FROM chirps');
+                let request = await Query('INSERT INTO mentions (userid, chirpid) values (?, ?)', [userId, max[0].id]);
+            } else console.log(`Username: ${chars.join('')} does not exist. no mention added: chirper.ts [addMention()].`);
+        }
+    }
+}
+
 const postChirp = async(name: string, password: string, content: string) => {
     try {
         const checkUser = await selectPassword(name);
@@ -59,22 +76,11 @@ const postChirp = async(name: string, password: string, content: string) => {
             return 401;
         } else {
             const insetChirp = await Query('INSERT INTO chirps (userid, content, location) values (?, ?, "A")', [await getUserIdFromName(name), content]);
-            const words = content.split(' ');
-            for(let word of words) {
-                if(word.startsWith('@')) {
-                    const chars = word.split('');
-                    chars.shift();
-                    let userId = await getUserIdFromName(chars.join(''));
-                    if(userId !== 0) { //user exists
-                        let max = await Query('SELECT MAX(id) as id FROM chirps');
-                        let request = await Query('INSERT INTO mentions (userid, chirpid) values (?, ?)', [userId, max[0].id]);
-                    }
-                }
-            }
+            let mention = await addMention(content, name);
             return insetChirp;
         }
-    } catch(e) { // invalid username
-        return 401;
+    } catch(e) { 
+        console.error(e);
     }
 }
 
@@ -87,17 +93,10 @@ const getChirpsFromName = async(name: string) => {
     }
 }
 
-const getUsers = async() => Query('SELECT * FROM users');
-
-
-// never used but it stays
-const mention = async(name: string) =>  {
-    const request = await Query('SELECT * FROM users WHERE name = ?', [name]);
-    return request[0];
-}
+const getUsers = async() => Query('SELECT id, name, email, _created FROM users');
 
 export default {
-    ps,
+    mentionsOfUser,
     allChirps,
     chirpOfId,
     deleteChirpOfId,
@@ -106,5 +105,4 @@ export default {
     getChirpsFromName,
     getUsers,
     postChirp,
-    mention
 }

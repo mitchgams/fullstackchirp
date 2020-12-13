@@ -14,7 +14,7 @@ router.get('/chirps/:id?', async(req, res) => {
 
 router.get('/mentions/:name?', async(req, res) => {
     const name = req.params.name;
-    res.json(await db.Chirps.ps(name));
+    res.json(await db.Chirps.mentionsOfUser(name));
 })
 
 router.get('/users/:name?', async(req, res) => {
@@ -34,13 +34,11 @@ router.get('/chirps/user/:name?', async(req, res) => {
 
 
 /**************************
- * Ok so I'm not super happy with the way I handled
- * incorrect pass/user. I hope you can kinda see where my head was at.
- * Right now if a password or username is invalid chirps.ts returns 401,
- * below if request isInteger it throws 401. which will obv be caught. 
- * My worry is I'm sendStatus(e), so if a different error is thrown it might crash the server.
- * well idk, everytime I get a major error in the server it keeps working, but still.
- * I'm sure there's a better way, but it felt right in the moment. thanks for reading.
+ * I wanted passwords to be required for everything, but at this point
+ * I wasn't exactly sure how to go about handling incorrect password/username
+ * entries. below is what I came up with. In my chirper.ts if a user/password
+ * if invalid it returns 401. the logic below will throw 401 if found and sendStatus(401)
+ * to client. Not sure if it was the best way but it works
  */
 
 router.delete('/chirps/delete/:id?', async(req, res) => {
@@ -50,8 +48,13 @@ router.delete('/chirps/delete/:id?', async(req, res) => {
         if(Number.isInteger(request)) throw request; // invalid password status 401
         res.sendStatus(200);
     } catch(e) {
-        console.error(e);
-        res.sendStatus(e); // same issue as in put. leaving for now until a better solution is found.
+        // this seems a bit sloppy but it works
+        if(e === 401) {
+            res.sendStatus(e); 
+            console.error(`invalid username or password: status ${e}`);
+        } else {
+            res.sendStatus(500);
+        }
     }
 });
 
@@ -62,8 +65,13 @@ router.put('/chirps/edit/:id?', async(req, res) => {
         if(Number.isInteger(request)) throw request; // invalid password status 401
         res.sendStatus(200);
     } catch(e) {
-        console.error(e);
-        res.sendStatus(e); //this works, but if a different error gets thrown somehow then this will crash my code. 
+        // this seems a bit sloppy but it works
+        if(e === 401) {
+            res.sendStatus(e); 
+            console.error(`invalid username or password: status ${e}`);
+        } else {
+            res.sendStatus(500);
+        } 
     }
 });
 
@@ -74,8 +82,13 @@ router.post('/chirps/post/', async(req, res) => {
         if(Number.isInteger(request)) throw request; //invalid username or password
         res.sendStatus(200);
     } catch(e) {
-        console.error(e);
-        res.sendStatus(e); // same issue as in put. leaving for now until a better solution is found.
+        // this seems a bit sloppy but it works
+        if(e === 401) {
+            res.sendStatus(e); 
+            console.error(`invalid username or password: status ${e}`);
+        } else {
+            res.sendStatus(500);
+        }
     }
 });
 

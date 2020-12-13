@@ -6,11 +6,6 @@ const Add: React.FC = () => {
 
     const [username, setUsername] = useState<string>('');
     const [content, setContent] = useState<string>('');
-    /***************************
-     * not sure about setting password to state but 
-     * I'm gunna do it... because I guess I'd be sending it 
-     * to server hashed but I'm not gunna mess with that rn
-     * **************************/
     const [password, setPassword] = useState<string>(''); 
     const history = useHistory();
 
@@ -26,6 +21,7 @@ const Add: React.FC = () => {
             if(request.status === 401) {
                 alert('The username or password you entered is incorrect');
             } else {
+                setPassword('');
                 history.push('/');
             }
         }
