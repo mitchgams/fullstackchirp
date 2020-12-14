@@ -72,9 +72,9 @@ const addMention = async(content: string, name: string) => {
 const postChirp = async(name: string, password: string, content: string) => {
     try {
         const checkUser = await selectPassword(name);
-        if(checkUser[0].password !== password) {
+        if(checkUser.length === 0 || checkUser[0].password !== password) {
             return 401;
-        } else {
+        } else { 
             const insetChirp = await Query('INSERT INTO chirps (userid, content, location) values (?, ?, "A")', [await getUserIdFromName(name), content]);
             let mention = await addMention(content, name);
             return insetChirp;

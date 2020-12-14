@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import * as Mentions from '../../parseMentions';
 
 export interface IChirps {
-    nextid: number,
     chirpid: string,
     username: string,
     content: string;

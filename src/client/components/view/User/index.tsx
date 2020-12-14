@@ -5,16 +5,11 @@ import { Link } from 'react-router-dom';
 // react-html-parse needed because my return wasn't parsing the html 
 import ReactHtmlParser from 'react-html-parser'; 
 import * as Mentions from '../../parseMentions';
+import { IChirps } from '../Chirps';
 import UserDNE from '../../UserDNE';
 
 interface IUseParams {
     name: string
-}
-
-export interface IChirps { // tried to just import this from ../Chirps, but it didn't like that. or I did it wrong idk
-    chirpid: string,
-    username: string,
-    content: string;
 }
 
 const User: React.FC = () => {
