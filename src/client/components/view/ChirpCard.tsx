@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import ReactHtmlParser from 'react-html-parser'; // React was showing raw html, found this solution
-import { useState, useEffect } from 'react';
-import * as Mentions from '../../parseMentions';
-import ChirpCard from '../ChirpCard';
+import * as Mentions from '../parseMentions';
 
 export interface IChirps {
     chirpid: string,
@@ -11,23 +9,13 @@ export interface IChirps {
     content: string;
 }
 
-const Chirps: React.FC = () => {
+interface IAppProps {
+    chirps: IChirps[];
+}
 
-    const [chirps, setChirps] = useState<IChirps[]>([]);
+const ChirpCard: React.FC<IAppProps> = ({chirps}) => {
 
-    useEffect(() => {
-        (async() => {
-            try {
-                let r = await fetch('/chirps/');
-                let data = await r.json();
-                setChirps(data);
-            } catch (e) {
-                console.error(e);
-            }
-        })();
-     }, []);
-
-    /*return (
+    return (
         <>
             {chirps?.map(chirp => {
                 const { chirpid, username, content } = chirp;
@@ -38,10 +26,9 @@ const Chirps: React.FC = () => {
                     <div className="card-footer m-0 p-0 d-flex justify-content-end"><Link to={`/${chirpid}/admin`}>[Admin]</Link></div>
                 </article>
             );
-        })}
-        </>*/
-        return <ChirpCard chirps={chirps} />; 
-    //);
+        })} 
+        </>
+    );
 }
 
-export default Chirps;
+export default ChirpCard;

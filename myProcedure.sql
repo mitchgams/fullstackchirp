@@ -7,7 +7,7 @@ begin
 	select  c.userid as userid,
     m.chirpid as chirpid,
     c.content as content,
-    u.name as name,
+    u.name as username,
     c._created as date
     from mentions m
     join chirps c on m.chirpid = c.id

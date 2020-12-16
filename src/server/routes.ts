@@ -80,7 +80,7 @@ router.put('/chirps/edit/:id?', async(req, res) => {
 router.post('/chirps/post/', async(req, res) => {
     const { name, password, content } = req.body;
     try {
-        const request = await db.Chirps.postChirp(name, password, content);
+        const request: any = await db.Chirps.postChirp(name, password, content);
         if(Number.isInteger(request)) throw request; //invalid username or password
         res.sendStatus(200);
     } catch(e) {
